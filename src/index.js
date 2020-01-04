@@ -1,23 +1,20 @@
-// index.js
-
+const mongoose = require('mongoose');
 const serverless = require('serverless-http');
-const bodyParser = require('body-parser');
-const AWS = require('aws-sdk');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
-const cookieParser = require('cookie-parser');
-const express = require('express');
-const uuidv4 = require('uuid/v4');
 
-const app = express();
-
-// Takes the raw requests and turns them into usable properties on req.body
-app.use(cookieParser());
-app.use(bodyParser.json({ strict: false }));
-app.use(bodyParser.urlencoded({ extended: true }));
-
-app.get('/', function(req, res) {
-    res.send('Hello World!');
+// Connect to our Database and handle any bad connections
+mongoose.connect(process.env.DATABASE_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
 });
+mongoose.Promise = global.Promise; // Tell Mongoose to use ES6 promises
+mongoose.connection.on('error', err => {
+    console.error(`🙅 🚫 🙅 🚫 🙅 🚫 🙅 🚫 → ${err.message}`);
+});
+
+// Load Mongoose Models
+require('./models/Customer');
+require('./models/Invoice');
+
+const app = require('./app');
 
 module.exports.handler = serverless(app);

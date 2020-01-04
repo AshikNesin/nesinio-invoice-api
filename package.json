@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "dev": "sls offline start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -10,6 +11,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@nesin/mongoose-init": "0.0.4",
     "aws-sdk": "^2.597.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
@@ -22,6 +24,6 @@
   },
   "devDependencies": {
     "serverless-dotenv-plugin": "^2.1.1",
-    "serverless-offline": "^6.0.0-alpha.58"
+    "serverless-offline": "^3.20.2"
   }
 }

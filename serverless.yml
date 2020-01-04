@@ -1,18 +1,26 @@
 # serverless.yml
 service: nesinio-invoice-app
-
-plugins:
-  - serverless-offline # Place it at the top of plugin list
-  - serverless-dotenv-plugin
 provider:
   name: aws
   runtime: nodejs8.10
   stage: dev
   region: us-east-1
   profile: NesinTechnologies
+custom:
+  serverless-offline:
+    port: 7777
+plugins:
+  - serverless-dotenv-plugin
+  - serverless-offline  # serverless-offline needs to be last in the list
 functions:
   app:
     handler: src/index.handler
     events:
-      - http: ANY /
-      - http: "ANY {proxy+}"
+      - http:
+          path: /
+          method: ANY
+          cors: true
+      - http:
+          path: /{proxy+}
+          method: ANY
+          cors: true
