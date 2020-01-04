@@ -2,6 +2,7 @@
 service: nesinio-invoice-app
 
 plugins:
+  - serverless-offline # Place it at the top of plugin list
   - serverless-dotenv-plugin
 provider:
   name: aws
