@@ -2,7 +2,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
-const routes = require('./routes/index');
+const graphqlHTTP = require('express-graphql');
+const schema = require('./schema');
+
+const Query = require('./resolvers/Query');
+const Mutation = require('./resolvers/Mutation');
 
 // create our Express app
 const app = express();
@@ -14,20 +18,24 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// TODO: It's throwing error right now
-// // decode the JWT so we can get the user Id on each request
-// app.use((req, res, next) => {
-//     const { token } = req.cookies;
-//     if (token) {
-//         const { userId } = jwt.verify(token, process.env.JWT_SECRET_KEY);
-//         // put the userId onto the req for future requests to access
-//         req.userId = userId;
-//     }
-//     next();
-// });
+// Provide resolver functions for your schema fields
+const resolvers = {
+    ...Mutation,
+    ...Query
+};
 
-// After allllll that above middleware, we finally handle our own routes!
-app.use('/', routes);
+app.get('/', (req, res) => {
+    res.send('It works!');
+});
+
+app.use(
+    '/graphql',
+    graphqlHTTP({
+        schema,
+        rootValue: resolvers,
+        graphiql: true
+    })
+);
 
 app.use(function(err, req, res, next) {
     console.log(err.stack);

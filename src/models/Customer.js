@@ -33,5 +33,15 @@ const customerSchema = new Schema(
     { timestamps: true }
 );
 
+// Duplicate the ID field.
+customerSchema.virtual('id').get(function() {
+    return this._id.toHexString();
+});
+
+// Ensure virtual fields are serialised.
+customerSchema.set('toJSON', {
+    virtuals: true
+});
+
 module.exports =
     mongoose.models.Customer || mongoose.model('Customer', customerSchema);
