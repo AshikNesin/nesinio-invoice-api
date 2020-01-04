@@ -19,5 +19,8 @@
     "mongoose": "^5.8.4",
     "serverless-http": "^2.3.0",
     "uuid": "^3.3.3"
+  },
+  "devDependencies": {
+    "serverless-dotenv-plugin": "^2.1.1"
   }
 }
